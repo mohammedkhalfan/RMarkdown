@@ -1,0 +1,333 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>example 1 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.2">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    
+    <link rel="prev" href="./" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../index.html">
+            
+                <a href="../index.html">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="./index.html">
+            
+                <a href="./index.html">
+            
+                    
+                    Chapter 1
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter active" data-level="1.2.1" data-path="visualizing-alignment-stats.html">
+            
+                <a href="visualizing-alignment-stats.html">
+            
+                    
+                    example 1
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >example 1</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h2 id="visualizing-alignment-statistics">Visualizing Alignment Statistics</h2>
+<p>Sometimes it is helpful to visualize alignment statistics (ex: for quality control). Below we will see how we can make bar plot of alignment statistics in R. The data below is from a Single Cell RNA-Seq experiment (scRNA-Seq). Let&apos;s load in our initial data and take a look at it.</p>
+<pre><code class="lang-r">alignment_summary &lt;- read.table(<span class="hljs-string">&apos;/Users/mohammedkhalfan/Work/alignment_stats.txt&apos;</span>, header=<span class="hljs-literal">TRUE</span>)
+head(alignment_summary)
+</code></pre>
+<pre><code>##                            sample   total not_aligned aligned_once
+## 1 CE_1_10_CE_TC_sample_0010.fastq  402052       93214       284750
+## 2 CE_1_11_CE_TC_sample_0011.fastq 2079397      544079      1415762
+## 3 CE_1_12_CE_TC_sample_0012.fastq  529457       82655       415318
+## 4 CE_1_13_CE_TC_sample_0013.fastq 1237519      159103       975089
+## 5 CE_1_14_CE_TC_sample_0014.fastq  457252      130730       301983
+## 6 CE_1_15_CE_TC_sample_0015.fastq  320291      204695       103874
+##   multi_aligned percent_mapped
+## 1         24088          76.82
+## 2        119556          73.83
+## 3         31484          84.39
+## 4        103327          87.14
+## 5         24539          71.41
+## 6         11722          36.09
+</code></pre><p>Let&apos;s transform the stats we have into the stats we want to visualize (% uniquely mapped, %  multi mapped, % unmapped)</p>
+<pre><code class="lang-r">alignment_summary$unique_percent &lt;- (alignment_summary$aligned_once / alignment_summary$total)*<span class="hljs-number">100</span>
+alignment_summary$multi_percent &lt;- (alignment_summary$multi_aligned / alignment_summary$total)*<span class="hljs-number">100</span>
+alignment_summary$unmapped_percent &lt;- (alignment_summary$not_aligned / alignment_summary$total)*<span class="hljs-number">100</span>
+head(alignment_summary)
+</code></pre>
+<pre><code>##                            sample   total not_aligned aligned_once
+## 1 CE_1_10_CE_TC_sample_0010.fastq  402052       93214       284750
+## 2 CE_1_11_CE_TC_sample_0011.fastq 2079397      544079      1415762
+## 3 CE_1_12_CE_TC_sample_0012.fastq  529457       82655       415318
+## 4 CE_1_13_CE_TC_sample_0013.fastq 1237519      159103       975089
+## 5 CE_1_14_CE_TC_sample_0014.fastq  457252      130730       301983
+## 6 CE_1_15_CE_TC_sample_0015.fastq  320291      204695       103874
+##   multi_aligned percent_mapped unique_percent multi_percent
+## 1         24088          76.82       70.82417      5.991265
+## 2        119556          73.83       68.08522      5.749551
+## 3         31484          84.39       78.44225      5.946470
+## 4        103327          87.14       78.79386      8.349528
+## 5         24539          71.41       66.04301      5.366625
+## 6         11722          36.09       32.43113      3.659797
+##   unmapped_percent
+## 1         23.18456
+## 2         26.16523
+## 3         15.61128
+## 4         12.85661
+## 5         28.59036
+## 6         63.90907
+</code></pre><p>Now we have all the data we need. Let&apos;s get just the columns we want</p>
+<pre><code class="lang-r">counts = data.matrix(alignment_summary[<span class="hljs-number">7</span>:<span class="hljs-number">9</span>])
+head(counts)
+</code></pre>
+<pre><code>##      unique_percent multi_percent unmapped_percent
+## [1,]       70.82417      5.991265         23.18456
+## [2,]       68.08522      5.749551         26.16523
+## [3,]       78.44225      5.946470         15.61128
+## [4,]       78.79386      8.349528         12.85661
+## [5,]       66.04301      5.366625         28.59036
+## [6,]       32.43113      3.659797         63.90907
+</code></pre><p>We need to transpose the matrix to plot it as a barplot</p>
+<pre><code class="lang-r">counts = t(counts)
+head(counts)
+</code></pre>
+<pre><code>##                       [,1]      [,2]     [,3]      [,4]      [,5]
+## unique_percent   70.824172 68.085219 78.44225 78.793861 66.043013
+## multi_percent     5.991265  5.749551  5.94647  8.349528  5.366625
+## unmapped_percent 23.184563 26.165230 15.61128 12.856611 28.590362
+##                       [,6]      [,7]      [,8]     [,9]     [,10]    [,11]
+## unique_percent   32.431133 61.393143 71.029980 50.27456 63.933189 67.41334
+## multi_percent     3.659797  4.141265  6.875452  5.25703  7.025292  6.64696
+## unmapped_percent 63.909070 34.465592 22.094568 44.46841 29.041519 25.93970
+##                      [,12]     [,13]     [,14]     [,15]
+## unique_percent   36.518466 73.201486 81.259087 70.828835
+## multi_percent     3.641995  5.290887  6.789712  6.151838
+## unmapped_percent 59.839539 21.507627 11.951202 23.019326
+</code></pre><p>Finally, let&apos;s plot our chart!</p>
+<pre><code class="lang-r">barplot(counts, names.arg=alignment_summary$sample,las=<span class="hljs-number">2</span>,ylab=<span class="hljs-string">&apos;percentage of reads&apos;</span>,legend.text=rownames(counts),args.legend=list(y=<span class="hljs-number">125</span>))
+</code></pre>
+<p><img src="figure/unnamed-chunk-5-1.png" alt="plot of chunk unnamed-chunk-5"></p>
+<p>From the bar plot above, we can see that samples 6 and 15 have poor alignment rates relative to the rest of the library. We may want to classify these as outliers and remove them from our downstream analysis.</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="./" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Chapter 1">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"example 1","author":"Mohammed Khalfan","date":"Tuesday, October 11, 2016","output":"html_document","level":"1.2.1","depth":2,"previous":{"title":"Chapter 1","level":"1.2","depth":1,"path":"chapter1/README.md","ref":"chapter1/README.md","articles":[{"title":"example 1","level":"1.2.1","depth":2,"path":"chapter1/visualizing-alignment-stats.md","ref":"chapter1/visualizing-alignment-stats.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"chapter1/visualizing-alignment-stats.md","mtime":"2016-10-13T16:58:03.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-10-13T16:58:22.500Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
